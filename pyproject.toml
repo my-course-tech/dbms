@@ -7,10 +7,18 @@ authors = [
 ]
 license = {text = "CC BY-NC 4.0"}
 readme = "README.md"
+keywords = [
+    "DBMS", "СУБД",
+    "DB", "БД",
+    "database", "база данных",
+    "databases", "базы данных",
+    "database management system", "система управления базами данных",
+    "database management systems", "системы управления базами данных",
+]
 
-
-readme = "README.md"
-keywords = ["DBMS", "DB", "СУБД", "БД", "database", "базы данных", "системы управления базами данных", "database management system"]
+#======================================================================================================================
+# Dependencies
+#======================================================================================================================
 requires-python = ">=3.11,<4.0"
 dependencies = [
     "jupyterlab (>=4.4.0,<5.0.0)",
@@ -18,16 +26,49 @@ dependencies = [
     "jupyter-tikz (>=0.5.6,<0.6.0)",
 ]
 
-
 [tool.poetry.group.dev.dependencies]
 poetry-exec-plugin = {git = "https://github.com/askras/poetry-exec-plugin.git"} # A plugin for poetry that allows you to execute scripts defined in your pyproject.toml
 poetry-plugin-export = "~1.9" # Poetry plugin to export the dependencies to various formats
+
+
+#======================================================================================================================
+# System
+#======================================================================================================================
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
 
 
 [tool.poetry]
 package-mode = false
 
 
-[build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
+#======================================================================================================================
+# Scripts or executables that will be installed when installing the package
+# https://python-poetry.org/docs/pyproject#scripts
+#======================================================================================================================
+[tool.poetry.scripts]
+
+
+#======================================================================================================================
+# A plugin for poetry that allows you to execute scripts, just like you can in npm or pipenv
+# https://pypi.org/project/poetry-exec-plugin/
+#======================================================================================================================
+[tool.poetry-exec-plugin.commands]
+
+jupyter = """
+echo 'Start Jupyter Lab without token'
+export JUPYTERLAB_SETTINGS_DIR=./.jupyterlab_config/user-settings
+export JUPYTERLAB_WORKSPACES_DIR=./.jupyterlab_config/workspaces
+python -m jupyter lab --allow-root --NotebookApp.token='' --NotebookApp.password='' --no-browser
+"""
+
+
+#======================================================================================================================
+# Jupytext: Jupyter notebooks as Markdown documents, Julia, Python or R scripts
+# https://github.com/mwouts/jupytext
+#======================================================================================================================
+[tool.jupytext]
+#notebook_extensions = "md"
+formats = "ipynb,md:myst"
+split_at_heading = true
